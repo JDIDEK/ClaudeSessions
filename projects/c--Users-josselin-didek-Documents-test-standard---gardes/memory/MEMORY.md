@@ -1,0 +1,2 @@
+- [Appli gardes et astreintes](appli-gardes-astreintes.md) — projet Go/MariaDB/AD remplaçant le circuit Excel ; étapes restantes côté serveur et reprise des données
+- [Expliquer le déploiement](explications-deploiement-josselin.md) — partir du WAMP existant et de l'URL finale avant de parler de la stack

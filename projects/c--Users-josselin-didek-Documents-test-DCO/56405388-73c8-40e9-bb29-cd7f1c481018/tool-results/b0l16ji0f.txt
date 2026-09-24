@@ -1,0 +1,1148 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+
+import logoDco from "../../../dco-site-assets/images/brand-logo-dco.png";
+import { useLenis } from "@/components/motion/SmoothScroll";
+import { useClientGsap } from "@/hooks/useClientGsap";
+
+import styles from "./Loader.module.css";
+
+const MINIMUM_DURATION = 1250;
+const REDUCED_MINIMUM_DURATION = 180;
+const MAXIMUM_DURATION = 4500;
+
+function readAssetProgress() {
+  const images = Array.from(document.images);
+  if (images.length === 0) return document.readyState === "complete" ? 1 : 0.35;
+
+  return images.filter((image) => image.complete).length / images.length;
+}
+
+export function Loader() {
+  const motion = useClientGsap();
+  const lenis = useLenis();
+  const [done, setDone] = useState(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const markRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLSpanElement>(null);
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useRef(lenis);
+
+  useEffect(() => {
+    lenisRef.current = lenis;
+    if (!lenis) return;
+
+    if (document.documentElement.dataset.loader === "active") lenis.stop();
+    else lenis.start();
+  }, [lenis]);
+
+  useEffect(() => {
+      if (!motion) return;
+      const { gsap, ScrollTrigger } = motion;
+      const root = document.documentElement;
+
+      if (root.dataset.loader !== "active") {
+        const skipFrame = window.requestAnimationFrame(() => setDone(true));
+        return () => window.cancelAnimationFrame(skipFrame);
+      }
+
+      const overlay = overlayRef.current;
+      const mark = markRef.current;
+      const name = nameRef.current;
+      const counter = counterRef.current;
+      const progress = progressRef.current;
+      const progressBar = progressBarRef.current;
+
+      if (!overlay || !mark || !name || !counter || !progress || !progressBar) return;
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const minimumDuration = reducedMotion ? REDUCED_MINIMUM_DURATION : MINIMUM_DURATION;
+      const details = overlay.querySelectorAll(`.${styles.detail}`);
+
+      window.scrollTo(0, 0);
+      lenisRef.current?.stop();
+
+      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+      intro
+        .fromTo(mark, { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.75 }, 0)
+        .fromTo(name, { yPercent: 110 }, { yPercent: 0, duration: 0.8, ease: "expo.out" }, 0.08)
+        .fromTo(details, { opacity: 0 }, { opacity: 1, duration: 0.45, stagger: 0.04 }, 0.2);
+
+      if (reducedMotion) intro.progress(1);
+
+      const setProgress = gsap.quickSetter(progressBar, "scaleX");
+      const startedAt = performance.now();
+      let pageLoaded = document.readyState === "complete";
+      let displayed = 0;
+      let frameId = 0;
+      let finished = false;
+
+      const onWindowLoad = () => {
+        pageLoaded = true;
+      };
+
+      const render = (ratio: number) => {
+        const safeRatio = Math.min(Math.max(ratio, 0), 1);
+        const percent = Math.round(safeRatio * 100);
+        counter.textContent = String(percent).padStart(2, "0");
+        progress.setAttribute("aria-valuenow", String(percent));
+        setProgress(safeRatio);
+      };
+
+      const release = () => {
+        root.dataset.loader = "done";
+        if ("scrollRestoration" in history) history.scrollRestoration = "auto";
+        lenisRef.current?.start();
+        ScrollTrigger.refresh();
+      };
+
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        render(1);
+
+        if (reducedMotion) {
+          release();
+          gsap.to(overlay, {
+            opacity: 0,
+            duration: 0.18,
+            ease: "power2.out",
+            onComplete: () => setDone(true),
+          });
+          return;
+        }
+
+        const targetLogo = document.querySelector<HTMLElement>(
+          '[data-header-intro="logo"] img',
+        );
+        const markBounds = mark.getBoundingClientRect();
+        const targetBounds = targetLogo?.getBoundingClientRect();
+        const hasTarget = Boolean(targetBounds?.width && markBounds.width);
+        const moveX = hasTarget
+          ? targetBounds!.left + targetBounds!.width / 2 - (markBounds.left + markBounds.width / 2)
+          : 0;
+        const moveY = hasTarget
+          ? targetBounds!.top + targetBounds!.height / 2 - (markBounds.top + markBounds.height / 2)
+          : -window.innerHeight * 0.42;
+        const targetScale = hasTarget ? targetBounds!.width / markBounds.width : 0.38;
+
+        const exit = gsap.timeline({ onComplete: () => setDone(true) });
+        exit
+          .to(details, { opacity: 0, duration: 0.24, ease: "power2.in" }, 0)
+          .to(name, { yPercent: -110, duration: 0.42, ease: "power3.in" }, 0)
+          .to(
+            mark,
+            {
+              x: moveX,
+              y: moveY,
+              scale: targetScale,
+              duration: 0.82,
+              ease: "expo.inOut",
+            },
+            0.08,
+          )
+          .call(release, [], 0.52)
+          .to(overlay, { opacity: 0, duration: 0.38, ease: "power2.out" }, 0.66);
+      };
+
+      const tick = (now: number) => {
+        const elapsed = now - startedAt;
+        const timedOut = elapsed >= MAXIMUM_DURATION;
+        const canFinish = elapsed >= minimumDuration && (pageLoaded || timedOut);
+        const timeProgress = Math.min(elapsed / minimumDuration, 1) * 0.9;
+        const assetProgress = readAssetProgress() * 0.9;
+        const target = canFinish ? 1 : Math.max(timeProgress, assetProgress);
+
+        displayed += (target - displayed) * (canFinish ? 0.2 : 0.08);
+        render(displayed);
+
+        if (canFinish && displayed > 0.996) {
+          finish();
+          return;
+        }
+
+        frameId = window.requestAnimationFrame(tick);
+      };
+
+      window.addEventListener("load", onWindowLoad);
+      frameId = window.requestAnimationFrame(tick);
+
+      return () => {
+        window.removeEventListener("load", onWindowLoad);
+        window.cancelAnimationFrame(frameId);
+      };
+    }, [motion]);
+
+  if (done) return null;
+
+  return (
+    <div ref={overlayRef} className={styles.overlay} data-dco-loader="">
+      <div className={styles.frame} aria-hidden="true">
+        <header className={`${styles.topline} ${styles.detail}`}>
+          <span>Coaching professionnel</span>
+        </header>
+
+        <div className={styles.identity}>
+          <div ref={markRef} className={styles.mark}>
+            <Image src={logoDco} alt="" width={120} height={120} priority />
+          </div>
+
+          <span className={styles.nameMask}>
+            <span ref={nameRef} className={styles.name}>DEBAS</span>
+          </span>
+          <span className={`${styles.descriptor} ${styles.detail}`}>
+            Coaching &amp; Organisations
+          </span>
+        </div>
+
+        <footer className={`${styles.footer} ${styles.detail}`}>
+          <span className={styles.loadingLabel}>Chargement</span>
+
+          <div
+            ref={progressRef}
+            className={styles.progress}
+            role="progressbar"
+            aria-label="Chargement du site"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={0}
+          >
+            <div ref={progressBarRef} className={styles.progressBar} />
+          </div>
+
+          <span className={styles.counterWrap}>
+            <span ref={counterRef}>00</span>%
+          </span>
+        </footer>
+      </div>
+
+      <p className={styles.srOnly} role="status" aria-live="polite">
+        Chargement du site en cours…
+      </p>
+    </div>
+  );
+}
+/**
+ * Runs before the page content is parsed so the hero never flashes: it marks
+ * the document as "loading" on every full page load (hard refresh included).
+ */
+export const LOADER_INIT_SCRIPT = `(function(){var r=document.documentElement;r.setAttribute("data-loader","active");if("scrollRestoration" in history){history.scrollRestoration="manual"}})();`;
+"use client";
+
+import type gsap from "gsap";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { useClientGsap } from "@/hooks/useClientGsap";
+
+import styles from "./NavigationTransition.module.css";
+
+type NavigateOptions = Readonly<{
+  label?: string;
+}>;
+
+type NavigationTransitionContextValue = Readonly<{
+  isTransitioning: boolean;
+  navigateWithWipe: (href: string, options?: NavigateOptions) => void;
+}>;
+
+const NavigationTransitionContext =
+  createContext<NavigationTransitionContextValue>({
+    isTransitioning: false,
+    navigateWithWipe: () => {},
+  });
+
+const INITIAL_WIPE_X = -102;
+const FINAL_WIPE_X = 102;
+const TRANSITION_IN_DURATION = 1.18;
+const TRANSITION_HOLD_DURATION = 0.26;
+const TRANSITION_OUT_DURATION = 0.94;
+const ROUTE_CHANGE_TIMEOUT = 5000;
+
+const ROUTE_LABELS: Readonly<Record<string, string>> = {
+  "/": "Accueil",
+  "/a-propos": "À propos",
+  "/enneagramme": "Ennéagramme",
+  "/contact": "Contact",
+  "/entreprises": "Entreprises",
+  "/mentions-legales": "Mentions légales",
+  "/particuliers": "Particuliers",
+  "/politique-confidentialite": "Confidentialité",
+  "/tarifs": "Tarifs",
+};
+
+function getHref(url: URL) {
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
+function getTransitionLabel(anchor: HTMLAnchorElement, url: URL) {
+  return (
+    anchor.dataset.transitionLabel ??
+    ROUTE_LABELS[url.pathname] ??
+    anchor.getAttribute("aria-label") ??
+    ""
+  ).trim();
+}
+
+function isModifiedClick(event: MouseEvent) {
+  return (
+    event.button !== 0 ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.shiftKey ||
+    event.altKey
+  );
+}
+
+export function NavigationTransitionProvider({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) {
+  const router = useRouter();
+  const gsap = useClientGsap()?.gsap;
+  const pathname = usePathname();
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const wipeRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
+  const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const targetPathRef = useRef<string | null>(null);
+  const startPathRef = useRef(pathname);
+  const finishTimerRef = useRef<number | null>(null);
+  const fallbackTimerRef = useRef<number | null>(null);
+  const isTransitioningRef = useRef(false);
+  const pathnameRef = useRef(pathname);
+  const prefersReducedMotionRef = useRef(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [label, setLabel] = useState("");
+
+  const clearTimers = useCallback(() => {
+    if (finishTimerRef.current !== null) {
+      window.clearTimeout(finishTimerRef.current);
+      finishTimerRef.current = null;
+    }
+
+    if (fallbackTimerRef.current !== null) {
+      window.clearTimeout(fallbackTimerRef.current);
+      fallbackTimerRef.current = null;
+    }
+  }, []);
+
+  const resetOverlay = useCallback(() => {
+    if (!gsap) return;
+    if (overlayRef.current) {
+      gsap.set(overlayRef.current, { opacity: 0 });
+    }
+
+    if (wipeRef.current) {
+      gsap.set(wipeRef.current, { xPercent: INITIAL_WIPE_X });
+    }
+
+    if (labelRef.current) {
+      gsap.set(labelRef.current, { autoAlpha: 0, y: 18 });
+    }
+  }, [gsap]);
+
+  const finishTransition = useCallback(() => {
+    const overlay = overlayRef.current;
+    const wipe = wipeRef.current;
+
+    clearTimers();
+
+    if (!overlay || !wipe || !gsap) {
+      targetPathRef.current = null;
+      isTransitioningRef.current = false;
+      setLabel("");
+      setIsTransitioning(false);
+      return;
+    }
+
+    timelineRef.current?.kill();
+    gsap.killTweensOf([wipe, labelRef.current]);
+
+    timelineRef.current = gsap.timeline({
+      onComplete: () => {
+        resetOverlay();
+        targetPathRef.current = null;
+        isTransitioningRef.current = false;
+        setLabel("");
+        setIsTransitioning(false);
+        timelineRef.current = null;
+      },
+    });
+
+    timelineRef.current.to(
+      wipe,
+      {
+        xPercent: FINAL_WIPE_X,
+        duration: TRANSITION_OUT_DURATION,
+        ease: "expo.inOut",
+      },
+      0,
+    );
+    timelineRef.current.to(
+      labelRef.current,
+      {
+        autoAlpha: 0,
+        y: -14,
+        duration: TRANSITION_OUT_DURATION * 0.26,
+        ease: "power2.in",
+      },
+      0,
+    );
+  }, [clearTimers, gsap, resetOverlay]);
+
+  useEffect(() => {
+    pathnameRef.current = pathname;
+  }, [pathname]);
+
+  useEffect(() => {
+    const motionMedia = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotion = () => {
+      prefersReducedMotionRef.current = motionMedia.matches;
+    };
+
+    updateMotion();
+    motionMedia.addEventListener("change", updateMotion);
+
+    return () => {
+      motionMedia.removeEventListener("change", updateMotion);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (
+      !isTransitioning ||
+      !targetPathRef.current ||
+      targetPathRef.current === startPathRef.current ||
+      pathname !== targetPathRef.current
+    ) {
+      return;
+    }
+
+    finishTimerRef.current = window.setTimeout(
+      finishTransition,
+      TRANSITION_HOLD_DURATION * 1000,
+    );
+  }, [finishTransition, isTransitioning, pathname]);
+
+  useEffect(
+    () => () => {
+      clearTimers();
+      timelineRef.current?.kill();
+    },
+    [clearTimers],
+  );
+
+  const navigateWithWipe = useCallback(
+    (href: string, options?: NavigateOptions) => {
+      const url = new URL(href, window.location.href);
+      const destination = getHref(url);
+      const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      const overlay = overlayRef.current;
+      const wipe = wipeRef.current;
+
+      if (
+        !gsap ||
+        url.origin !== window.location.origin ||
+        destination === current ||
+        isTransitioningRef.current ||
+        !overlay ||
+        !wipe
+      ) {
+        return;
+      }
+
+      if (prefersReducedMotionRef.current) {
+        router.push(destination);
+        return;
+      }
+
+      targetPathRef.current = url.pathname;
+      startPathRef.current = pathnameRef.current;
+      isTransitioningRef.current = true;
+      setLabel(options?.label?.toUpperCase() ?? "");
+      setIsTransitioning(true);
+      clearTimers();
+
+      timelineRef.current?.kill();
+      gsap.killTweensOf([overlay, wipe, labelRef.current]);
+      gsap.set(overlay, { opacity: 1 });
+      gsap.set(wipe, { force3D: true, xPercent: INITIAL_WIPE_X });
+      gsap.set(labelRef.current, { autoAlpha: 0, y: 18 });
+
+      timelineRef.current = gsap.timeline();
+      timelineRef.current.to(
+        wipe,
+        {
+          xPercent: 0,
+          duration: TRANSITION_IN_DURATION,
+          ease: "expo.inOut",
+        },
+        0,
+      );
+      timelineRef.current.to(
+        labelRef.current,
+        {
+          autoAlpha: options?.label ? 0.72 : 0,
+          y: 0,
+          duration: 0.32,
+          ease: "power2.out",
+        },
+        0.28,
+      );
+      timelineRef.current.add(() => {
+        router.push(destination);
+
+        if (url.pathname === startPathRef.current) {
+          finishTimerRef.current = window.setTimeout(
+            finishTransition,
+            TRANSITION_HOLD_DURATION * 1000,
+          );
+        }
+
+        fallbackTimerRef.current = window.setTimeout(
+          finishTransition,
+          ROUTE_CHANGE_TIMEOUT,
+        );
+      }, TRANSITION_IN_DURATION);
+
+      router.prefetch(`${url.pathname}${url.search}`);
+    },
+    [clearTimers, finishTransition, gsap, router],
+  );
+
+  useEffect(() => {
+    const handleInternalLink = (event: MouseEvent) => {
+      if (event.defaultPrevented || isModifiedClick(event)) return;
+
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const anchor = target.closest<HTMLAnchorElement>("a[href]");
+      if (
+        !anchor ||
+        anchor.hasAttribute("download") ||
+        anchor.target === "_blank" ||
+        anchor.dataset.pageTransition === "off"
+      ) {
+        return;
+      }
+
+      const url = new URL(anchor.href, window.location.href);
+      const sameDocument =
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search;
+
+      if (
+        url.origin !== window.location.origin ||
+        !["http:", "https:"].includes(url.protocol) ||
+        sameDocument
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      navigateWithWipe(getHref(url), {
+        label: getTransitionLabel(anchor, url),
+      });
+    };
+
+    document.addEventListener("click", handleInternalLink, true);
+    return () => document.removeEventListener("click", handleInternalLink, true);
+  }, [navigateWithWipe]);
+
+  const value = useMemo(
+    () => ({ isTransitioning, navigateWithWipe }),
+    [isTransitioning, navigateWithWipe],
+  );
+
+  return (
+    <NavigationTransitionContext.Provider value={value}>
+      {children}
+      <div aria-hidden="true" className={styles.overlay} ref={overlayRef}>
+        <div className={styles.wipe} ref={wipeRef} />
+        <span className={styles.label} ref={labelRef}>
+          {label}
+        </span>
+      </div>
+    </NavigationTransitionContext.Provider>
+  );
+}
+
+export function useNavigationTransition() {
+  return useContext(NavigationTransitionContext);
+}
+"use client";
+
+import Lenis from "lenis";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import { useClientGsap } from "@/hooks/useClientGsap";
+
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+const LenisContext = createContext<Lenis | null>(null);
+
+export function useLenis() {
+  return useContext(LenisContext);
+}
+
+type SmoothScrollProps = Readonly<{
+  children: ReactNode;
+}>;
+
+export function SmoothScroll({ children }: SmoothScrollProps) {
+  const motion = useClientGsap();
+  const [lenis, setLenis] = useState<Lenis | null>(null);
+
+  useEffect(() => {
+    if (!motion) return;
+    const { ScrollTrigger } = motion;
+    const motionPreference = window.matchMedia(REDUCED_MOTION_QUERY);
+    let instance: Lenis | null = null;
+
+    const updateScrollMode = () => {
+      instance?.destroy();
+      instance = null;
+
+      if (!motionPreference.matches) {
+        instance = new Lenis({
+          anchors: true,
+          autoRaf: true,
+          autoToggle: true,
+          lerp: 0.09,
+          smoothWheel: true,
+          stopInertiaOnNavigate: true,
+          syncTouch: false,
+        });
+
+        // Keep ScrollTrigger in sync with the smoothed scroll position.
+        instance.on("scroll", ScrollTrigger.update);
+      }
+
+      setLenis(instance);
+      ScrollTrigger.refresh();
+    };
+
+    updateScrollMode();
+    motionPreference.addEventListener("change", updateScrollMode);
+
+    return () => {
+      motionPreference.removeEventListener("change", updateScrollMode);
+      instance?.destroy();
+    };
+  }, [motion]);
+
+  return <LenisContext.Provider value={lenis}>{children}</LenisContext.Provider>;
+}
+"use client";
+
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import styles from "./SectionToc.module.css";
+
+/* En dessous de ce nombre de sections repérables, la page est considérée
+   comme trop courte pour justifier un sommaire. */
+const MIN_SECTIONS = 3;
+
+/* Ligne de lecture : la section active est celle qui croise ce point du
+   viewport, à 40 % depuis le haut. */
+const READING_LINE = 0.4;
+
+const MAX_LABEL_LENGTH = 38;
+
+/* Le sommaire passe par-dessus le texte : il n’apparaît que pendant le
+   défilement et s’efface peu après l’arrêt, sauf s’il est survolé. */
+const IDLE_DELAY = 900;
+
+type TocEntry = Readonly<{ id: string; label: string }>;
+
+function readLabel(section: HTMLElement): string | null {
+  const override = section.dataset.tocLabel;
+  if (override) return override;
+
+  const ariaLabel = section.getAttribute("aria-label")?.trim();
+  if (ariaLabel) return ariaLabel;
+
+  const headingId = section.getAttribute("aria-labelledby");
+  const headingText = headingId
+    ? document.getElementById(headingId)?.textContent?.trim()
+    : null;
+  if (!headingText) return null;
+
+  return headingText.length > MAX_LABEL_LENGTH
+    ? `${headingText.slice(0, MAX_LABEL_LENGTH - 1).trimEnd()}…`
+    : headingText;
+}
+
+function collectSections(): { entries: TocEntry[]; elements: HTMLElement[] } {
+  const main = document.getElementById("main-content");
+  if (!main) return { entries: [], elements: [] };
+
+  const entries: TocEntry[] = [];
+  const elements: HTMLElement[] = [];
+
+  /* Uniquement les enfants directs : certaines pages imbriquent des
+     <section> (les tableaux de tarifs, par exemple). */
+  Array.from(main.children).forEach((child, index) => {
+    if (!(child instanceof HTMLElement) || child.tagName !== "SECTION") return;
+    if (child.dataset.toc === "skip") return;
+
+    const label = readLabel(child);
+    if (!label) return;
+
+    if (!child.id) child.id = `section-${index}`;
+
+    entries.push({ id: child.id, label });
+    elements.push(child);
+  });
+
+  return { entries, elements };
+}
+
+export function SectionToc() {
+  const pathname = usePathname();
+  const [entries, setEntries] = useState<readonly TocEntry[]>([]);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [scrolling, setScrolling] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    let idleTimer: number | undefined;
+
+    const markScrolling = () => {
+      setScrolling(true);
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => setScrolling(false), IDLE_DELAY);
+    };
+
+    window.addEventListener("scroll", markScrolling, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", markScrolling);
+      window.clearTimeout(idleTimer);
+    };
+  }, []);
+
+  useEffect(() => {
+    let elements: HTMLElement[] = [];
+    let frameId: number | null = null;
+    let attempts = 0;
+    let cancelled = false;
+
+    const update = () => {
+      frameId = null;
+      if (cancelled || elements.length === 0) return;
+
+      const line = window.innerHeight * READING_LINE;
+      let current: string | null = null;
+
+      /* Les sections suivies sont contiguës : la containment suffit. Passé la
+         dernière (CTA, pied de page), plus rien n'est actif et le rail
+         s'efface. */
+      for (const element of elements) {
+        const { top, bottom } = element.getBoundingClientRect();
+        if (top <= line && bottom > line) {
+          current = element.id;
+          break;
+        }
+      }
+
+      setActiveId(current);
+    };
+
+    /* Le contenu peut n'être monté qu'une frame après le changement de route,
+       d'où les quelques tentatives avant d'abandonner. */
+    const discover = () => {
+      frameId = null;
+      if (cancelled) return;
+
+      if (attempts === 0) {
+        elements = [];
+        setEntries([]);
+        setActiveId(null);
+      }
+
+      const found = collectSections();
+
+      if (found.entries.length < MIN_SECTIONS) {
+        if (attempts < 10) {
+          attempts += 1;
+          frameId = window.requestAnimationFrame(discover);
+        }
+        return;
+      }
+
+      elements = found.elements;
+      setEntries(found.entries);
+      update();
+    };
+
+    const onScroll = () => {
+      if (frameId === null) frameId = window.requestAnimationFrame(update);
+    };
+
+    frameId = window.requestAnimationFrame(discover);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+    };
+  }, [pathname]);
+
+  if (entries.length < MIN_SECTIONS) return null;
+
+  return (
+    <nav
+      data-dco-toc=""
+      className={`${styles.toc} ${activeId && (scrolling || hovered) ? styles.tocVisible : ""}`}
+      aria-label="Sommaire de la page"
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+    >
+      {entries.map((entry) => (
+        <a
+          key={entry.id}
+          href={`#${entry.id}`}
+          className={styles.item}
+          aria-current={entry.id === activeId ? "true" : undefined}
+          tabIndex={activeId ? 0 : -1}
+        >
+          <span className={styles.marker} aria-hidden="true" />
+          <span className={styles.label}>{entry.label}</span>
+        </a>
+      ))}
+    </nav>
+  );
+}
+"use client";
+
+import { useEffect, useState } from "react";
+
+type GsapTools = Readonly<{
+  gsap: typeof import("gsap")["default"];
+  ScrollTrigger: typeof import("gsap/ScrollTrigger")["ScrollTrigger"];
+  SplitText: typeof import("gsap/SplitText")["SplitText"];
+}>;
+
+let toolsPromise: Promise<GsapTools> | null = null;
+
+function loadGsap() {
+  toolsPromise ??= Promise.all([
+    import("gsap"),
+    import("gsap/ScrollTrigger"),
+    import("gsap/SplitText"),
+  ]).then(([gsapModule, scrollModule, splitModule]) => {
+    const gsap = gsapModule.default;
+    const ScrollTrigger = scrollModule.ScrollTrigger;
+    const SplitText = splitModule.SplitText;
+    gsap.registerPlugin(ScrollTrigger, SplitText);
+    return { gsap, ScrollTrigger, SplitText };
+  });
+  return toolsPromise;
+}
+
+export function useClientGsap() {
+  const [tools, setTools] = useState<GsapTools | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    void loadGsap().then((loaded) => {
+      if (active) setTools(loaded);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return tools;
+}
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+const COMPACT_THRESHOLD = 84;
+const HIDE_THRESHOLD = 136;
+const DIRECTION_COMMIT_DISTANCE = 24;
+const MINIMUM_SCROLL_DELTA = 2;
+
+type HeaderVisibilityOptions = Readonly<{
+  forceVisible: boolean;
+}>;
+
+export function useHeaderVisibility({ forceVisible }: HeaderVisibilityOptions) {
+  const [compact, setCompact] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const compactRef = useRef(false);
+  const hiddenRef = useRef(false);
+  const forceVisibleRef = useRef(forceVisible);
+
+  useEffect(() => {
+    forceVisibleRef.current = forceVisible;
+    if (forceVisible && hiddenRef.current) {
+      hiddenRef.current = false;
+      setHidden(false);
+    }
+  }, [forceVisible]);
+
+  useEffect(() => {
+    let previousY = Math.max(window.scrollY, 0);
+    let committedDistance = 0;
+    let direction = 0;
+    let frameId: number | null = null;
+
+    const commitHiddenState = (nextHidden: boolean) => {
+      if (hiddenRef.current === nextHidden) return;
+      hiddenRef.current = nextHidden;
+      setHidden(nextHidden);
+    };
+
+    const update = () => {
+      const currentY = Math.max(window.scrollY, 0);
+      const nextCompact = currentY > COMPACT_THRESHOLD;
+
+      if (compactRef.current !== nextCompact) {
+        compactRef.current = nextCompact;
+        setCompact(nextCompact);
+      }
+
+      if (forceVisibleRef.current || currentY < HIDE_THRESHOLD) {
+        commitHiddenState(false);
+        committedDistance = 0;
+        direction = 0;
+        previousY = currentY;
+        frameId = null;
+        return;
+      }
+
+      const delta = currentY - previousY;
+      if (Math.abs(delta) >= MINIMUM_SCROLL_DELTA) {
+        const nextDirection = Math.sign(delta);
+
+        if (nextDirection !== direction) {
+          direction = nextDirection;
+          committedDistance = 0;
+        }
+
+        committedDistance += Math.abs(delta);
+        if (committedDistance >= DIRECTION_COMMIT_DISTANCE) {
+          commitHiddenState(direction > 0);
+          committedDistance = 0;
+        }
+      }
+
+      previousY = currentY;
+      frameId = null;
+    };
+
+    const onScroll = () => {
+      if (frameId === null) frameId = window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+    };
+  }, []);
+
+  return { compact, hidden };
+}
+"use client";
+
+import { useSyncExternalStore } from "react";
+
+/**
+ * Suit une media query CSS. Côté serveur (et pendant l'hydratation), renvoie
+ * `serverValue` : choisir la valeur qui correspond au rendu le plus courant.
+ */
+export function useMediaQuery(query: string, serverValue = false) {
+  return useSyncExternalStore(
+    (onChange) => {
+      const media = window.matchMedia(query);
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(query).matches,
+    () => serverValue,
+  );
+}
+"use client";
+
+import { useEffect, useState } from "react";
+
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+export function useReducedMotion() {
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+    const updatePreference = () => setReducedMotion(mediaQuery.matches);
+
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
+  return reducedMotion;
+}
+import Link from "next/link";
+import type { ReactNode } from "react";
+
+import styles from "./Button.module.css";
+
+type ButtonVariant = "primary" | "accent" | "secondary" | "link";
+
+type ButtonProps = Readonly<{
+  href: string;
+  children: ReactNode;
+  variant?: ButtonVariant;
+  /** Sur fond sombre ou bleu, inverse les couleurs du bouton. */
+  onDark?: boolean;
+  className?: string;
+}>;
+
+function isExternal(href: string) {
+  return /^(https?:|mailto:|tel:)/.test(href);
+}
+
+export function Button({
+  href,
+  children,
+  variant = "primary",
+  onDark = false,
+  className,
+}: ButtonProps) {
+  const external = isExternal(href);
+  const classes = [styles.button, styles[variant], onDark ? styles.onDark : "", className ?? ""]
+    .filter(Boolean)
+    .join(" ");
+  const content = (
+    <>
+      <span>{children}</span>
+      <span className={styles.arrow} aria-hidden="true">
+        {href.startsWith("http") ? "↗" : "→"}
+      </span>
+    </>
+  );
+
+  if (external) {
+    const opensTab = href.startsWith("http");
+    return (
+      <a
+        href={href}
+        className={classes}
+        target={opensTab ? "_blank" : undefined}
+        rel={opensTab ? "noreferrer" : undefined}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={classes}>
+      {content}
+    </Link>
+  );
+}
+"use client";
+
+import { useEffect, useRef, type ReactNode } from "react";
+
+import { useClientGsap } from "@/hooks/useClientGsap";
+import { whenLoaderDone } from "@/lib/loader";
+
+type RevealTextProps = Readonly<{
+  as?: "h1" | "h2" | "h3" | "p";
+  children: ReactNode;
+  className?: string;
+  id?: string;
+  delay?: number;
+}>;
+
+/**
+ * Fait monter chaque ligne du texte depuis un masque quand il entre à l'écran.
+ * Le texte reste un seul élément sémantique : seules les lignes sont découpées.
+ */
+export function RevealText({ as = "h2", children, className, id, delay = 0 }: RevealTextProps) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const motion = useClientGsap();
+
+  useEffect(() => {
+      if (!motion) return;
+      const { gsap, ScrollTrigger, SplitText } = motion;
+      const element = ref.current;
+      if (!element) return;
+
+      const media = gsap.matchMedia();
+      media.add("(prefers-reduced-motion: no-preference)", () => {
+        const pending: Array<() => void> = [];
+        const split = SplitText.create(element, {
+          type: "lines",
+          mask: "lines",
+          linesClass: "reveal-line",
+          autoSplit: true,
+          onSplit: (self) => {
+            const reveal = gsap.from(self.lines, {
+              yPercent: 110,
+              duration: 1.1,
+              ease: "expo.out",
+              stagger: 0.09,
+              delay,
+              paused: true,
+            });
+            ScrollTrigger.create({
+              trigger: element,
+              start: "top 90%",
+              once: true,
+              // Au premier chargement, l'animation attend que le rideau du loader soit levé.
+              onEnter: () => pending.push(whenLoaderDone(() => reveal.play())),
+            });
+            return reveal;
+          },
+        });
+
+        return () => {
+          pending.forEach((cancel) => cancel());
+          split.revert();
+        };
+      });
+
+      return () => media.revert();
+    }, [delay, motion]);
+
+  // h1, h2, h3 et p se manipulent de la même façon ici : un seul type suffit.
+  const Tag = as as "h2";
+
+  return (
+    <Tag ref={ref} className={className} id={id}>
+      {children}
+    </Tag>
+  );
+}

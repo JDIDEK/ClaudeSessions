@@ -1,0 +1,1 @@
+- [Pas d'effet IA dans le design](design-pas-effet-ia.md) — pas de bande latérale colorée ni de bandeau épais ; textes sobres

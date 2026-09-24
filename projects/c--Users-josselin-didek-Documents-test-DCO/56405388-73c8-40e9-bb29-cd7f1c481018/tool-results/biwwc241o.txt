@@ -1,0 +1,743 @@
+image DCO (refaire en 3d puzzle) a la place de l'énéagrame sur la page d'accueil
+
+image énéagrame 3d en relief a faire
+
+idée logo : le d a gauche le c a droite, le O c'est le tout (le O est censé etre une planete terre dco qui tourne autour a faire en 3d)
+
+changer l'adresse : 11 rue fodéré, parking curial a 50 metre, facilité de restauration, pas d'acces pmr possibilité de trouvé un lieu adapté ou visio adapté peut etre le mettre dans le site (contact)
+
+la page summup pour prendre rdv doit existé mais elle est ou
+
+déroulement coaching selon le process ICF expliquer et mettre un lien
+
+est ce que le site peux etre mis sur vercel sachant qu'il vent des formation
+
+certification de coach mais il faut aussi rajouter certification enneagramme
+
+DEBAS COACHING & ORG. dans le footer mais il le faut en entier
+
+Section comment se déroule un coaching ? bloquer le scroll et faire bouger le point bleu vers les autre case (comme pour "Ce que l'otuil permet d'observer") et je veux que ce comportement soit pour mobile et pc
+z# Audit de contenu — Debas Coaching & Organisations
+
+Source analysée : <https://temp-kzglbufcqbmyyhwclbdb.webadorsite.com/>  
+Date de l'audit : 29 juillet 2026  
+Périmètre : arborescence, contenus, offres, tarifs, médias, cohérence éditoriale, SEO et préparation de la nouvelle version.
+
+## Décision éditoriale principale
+
+La nouvelle version doit être centrée sur trois offres :
+
+1. Coaching professionnel individuel et d'équipe.
+2. Ennéagramme : profilage, formation et accompagnement.
+3. Formations et accompagnement du changement.
+
+Toute l'offre Export doit disparaître. Cela comprend :
+
+- la page `/accompagnements/direction-export-externalisee` ;
+- l'entrée « Direction Export externalisée » dans le menu ;
+- le bloc d'accueil « S'armer pour saisir les opportunités à l'export » ;
+- « Externalisation », « Pilotage de projet », « Pilotage d'activité export » et les conseils associés ;
+- le passage « conseil en organisation des opérations de commerce international » de la page À propos ;
+- les images, logos et références explicitement liés à l'export ou à l'OSCI.
+
+## Arborescence recommandée
+
+```text
+Accueil
+├── À propos
+├── Accompagnements
+│   ├── Coaching
+│   ├── Ennéagramme
+│   └── Formations
+├── Tarifs
+│   ├── Coaching particuliers
+│   ├── Ennéagramme particuliers
+│   └── Professionnels
+├── Contact
+└── Mentions légales
+```
+
+« Témoignages » reste une section de l'accueil tant qu'il n'existe pas assez de contenu pour justifier une page dédiée. Les pages intermédiaires « + Infos » et « Solutions & Tarifs » peuvent être supprimées si elles ne font que répéter le menu.
+
+## Tri des pages actuelles
+
+| Page actuelle | Décision | Traitement recommandé |
+|---|---|---|
+| `/` | Conserver et réécrire | Garder la promesse, les trois familles d'offres, la présentation d'Olivier et les témoignages. Supprimer le bloc Export. |
+| `/a-propos-de-dco` | Conserver et nettoyer | Supprimer les doublons, `blablabla`, les références Export/International et le témoignage générique. |
+| `/accompagnements` | Conserver seulement comme hub utile | Remplacer la liste actuelle par trois cartes : Coaching, Ennéagramme, Formations. |
+| `/accompagnements/coaching` | Conserver | Le contenu de fond est le plus abouti. Corriger la langue, raccourcir et structurer. |
+| `/accompagnements/enneagramme` | Conserver | Garder la définition, les bénéfices, l'approche DCO et une FAQ réellement utile. |
+| `/accompagnements/formations` | Conserver la route, réécrire entièrement | Le contenu actuel est presque entièrement un modèle Webador non personnalisé. |
+| `/accompagnements/direction-export-externalisee` | Supprimer | Hors périmètre de la nouvelle version. Prévoir une redirection 301 vers `/accompagnements`. |
+| `/solutions-tarifs` | Fusionner ou transformer | Utiliser comme vraie page Tarifs récapitulative, sinon la supprimer. |
+| `/solutions-tarifs/tarifs-coaching-particuliers` | Conserver | Corriger le prix `xx,00 €` et les tranches de séances qui se chevauchent. |
+| `/solutions-tarifs/tarifs-enneagramme-particuliers` | Conserver | Clarifier prix par personne, composition des groupes et conditions. |
+| `/solutions-tarifs/pour-professionnels` | Conserver | Résoudre les contradictions entre cartes et tableau avant publication. |
+| `/temoignages` | Supprimer pour le moment | La page est vide. Garder les trois témoignages sur l'accueil. |
+| `/contact` | Conserver | Garder formulaire, e-mail, LinkedIn et WhatsApp ; confirmer téléphone et localisation. |
+| `/infos` | Supprimer | Page intermédiaire sans valeur éditoriale. |
+| `/infos/mentions-legales` | Conserver, réécrire entièrement | Le contenu actuel contient deux brouillons, des champs vides et du texte explicatif générique. |
+
+## Contenu à reprendre par page
+
+### Accueil
+
+Objectif : expliquer rapidement ce que fait DCO, pour qui, et orienter vers un premier contact.
+
+Contenu utile à conserver :
+
+- Promesse : accompagnement personnel et professionnel sur mesure.
+- Ennéagramme comme outil de connaissance de soi et de transformation.
+- Citation : « Soyez vous-même, les autres sont déjà pris. » — Oscar Wilde.
+- Coaching professionnel individuel.
+- Coaching d'équipe, santé mentale au travail, cohésion et performance.
+- Ennéagramme : mieux se connaître, réguler son énergie, comprendre les autres, trouver sa place et anticiper les conflits.
+- Formations et conseil : transitions professionnelles, posture de manager-coach, empathie commerciale, prise de fonction et équilibres humains.
+- Présentation courte d'Olivier Debas : coach professionnel, praticien Ennéagramme, basé à Chambéry, avec accompagnement possible à distance.
+- Trois témoignages nominatifs déjà présents : Audrey, Christophe et Blandine.
+
+À supprimer :
+
+- le bloc complet Direction Export externalisée ;
+- le mot « International » dans les tuiles de présentation ;
+- les textes génériques et les répétitions de boutons « En savoir plus » sans destination précise.
+
+### À propos
+
+Fil narratif conseillé :
+
+1. Olivier Debas et son parcours entrepreneurial.
+2. Trente années d'expérience en management et direction d'entreprise.
+3. Quinze années de pratique de l'Ennéagramme.
+4. Certification de coach professionnel et engagement déontologique.
+5. Formation Premiers secours en santé mentale (PSSM).
+6. Philosophie : aider chacun à trouver de la clarté, de l'autonomie et de l'apaisement.
+
+Contenus à ne pas reprendre :
+
+- le mot `blablabla` ;
+- le même paragraphe biographique présent deux fois ;
+- « conseil en organisation des opérations de commerce international » ;
+- le visuel OSCI et la frise où « DEBAS EXPORT » est central ;
+- le faux témoignage « L'accompagnement d'Olivier a été une véritable révélation » sans identité vérifiable.
+
+### Accompagnements
+
+La page actuelle ne contient qu'une liste de catégories. La nouvelle version doit devenir une page de choix avec trois cartes :
+
+- Coaching : objectifs, transitions, posture, confiance et passage à l'action.
+- Ennéagramme : connaissance de soi, relations, émotions et coopération.
+- Formations : développement des compétences humaines et accompagnement du changement.
+
+### Coaching
+
+Contenu de fond à garder :
+
+- relation suivie visant des résultats concrets et mesurables ;
+- coaching professionnel, coaching d'équipe et coaching avec Ennéagramme ;
+- publics : particuliers, étudiants, dirigeants, managers, cadres, salariés et équipes ;
+- bénéfices : conscience, responsabilité, résilience, autonomie, coopération, santé psychologique et transitions professionnelles ;
+- séance préliminaire pour clarifier le besoin, créer le cadre et formaliser le contrat ;
+- accompagnement généralement limité à une dizaine de séances ;
+- séance de clôture obligatoire pour réaliser le bilan ;
+- certification RNCP 39786, formation Coaching Ways accréditée ICF niveau 2 ;
+- confidentialité et respect du code déontologique ICF ;
+- formation PSSM.
+
+Corrections importantes : remplacer « coché » par « coaché », « leurs nombres » par « leur nombre », « propre au coché » par « propres à la personne coachée » et « garanti » par « garantis ».
+
+### Ennéagramme
+
+Contenu de fond à garder :
+
+- l'Ennéagramme comme grille de lecture de neuf dynamiques de personnalité ;
+- l'idée qu'un trait central influence nos automatismes et notre vision du monde ;
+- bénéfices : mieux se connaître, améliorer ses relations et apaiser les tensions ;
+- plus de quinze ans de pratique ;
+- certification de praticien par le Centre d'Études de l'Ennéagramme ;
+- approche reliant tête, cœur, corps, émotions, stress et fonctionnement psychologique ;
+- FAQ sur l'âge, le distanciel et le caractère non ésotérique de l'outil.
+
+À retirer ou réécrire :
+
+- « 8 millions de personnes sur terres » ;
+- les affirmations sur la mécanique quantique si elles ne sont pas précisément sourcées ;
+- le bloc générique « L'exception au quotidien » ;
+- la FAQ qui empile plusieurs questions sans réponse concrète.
+
+### Formations
+
+La page actuelle n'est pas réutilisable telle quelle : elle contient des textes génériques Webador et seize occurrences de questions/réponses d'exemple.
+
+La page future doit préciser :
+
+- les thèmes réellement enseignés ;
+- les objectifs pédagogiques ;
+- les publics et prérequis ;
+- les formats, durées, lieux et jauges ;
+- les modalités d'évaluation ;
+- les intervenants : Olivier Debas et, si confirmé, Christian Pierdet ;
+- les tarifs ou la mention « sur devis » ;
+- l'accessibilité et le contact handicap si la formation entre dans un cadre professionnel réglementé.
+
+### Contact
+
+Éléments à conserver :
+
+- formulaire : nom, e-mail, message et champ anti-spam invisible ;
+- e-mail : `dco@odebas.fr` ;
+- téléphone public affiché : `06 67 59 29 20` ;
+- LinkedIn : <https://linkedin.com/company/dco-debas-coaching-organisations/> ;
+- WhatsApp : <https://api.whatsapp.com/send?phone=33667592920> ;
+- précision que les lieux de formation sont communiqués sur demande.
+
+À confirmer avant développement : le formulaire devra disposer d'un vrai service d'envoi, d'un message de succès, d'une gestion d'erreur et d'une information RGPD.
+
+### Témoignages
+
+Les trois témoignages de l'accueil peuvent être conservés, sous réserve d'autorisation :
+
+- Audrey — avocate ;
+- Christophe — cadre chez Feu Vert ;
+- Blandine — cadre chez Michelin.
+
+La page `/temoignages` est vide et ne doit pas être recréée tant qu'elle n'apporte pas de témoignages supplémentaires.
+
+### Mentions légales
+
+La page actuelle n'est pas publiable. Elle contient des placeholders comme `[URL de votre site]`, `(à préciser)`, une adresse manquante et deux versions concurrentes.
+
+Informations récupérables, à faire valider juridiquement :
+
+- éditeur : Olivier Debas / DCO ;
+- activité exercée via le portage entrepreneurial Auxime ;
+- Auxime, RCS Lyon 404 328 510 ;
+- adresse de facturation indiquée : 9 quai Jean Moulin, 69001 Lyon ;
+- téléphone indiqué : 04 78 39 93 08 ;
+- e-mail DCO : `dco@odebas.fr` ;
+- hébergeur à remplacer par celui de la nouvelle version ;
+- politique de confidentialité et gestion des cookies à créer selon les outils effectivement utilisés.
+
+## Tarifs à reprendre et points à confirmer
+
+### Coaching — particuliers, TTC
+
+| Offre | Tarif relevé | Remarque |
+|---|---:|---|
+| Coaching individuel, carte d'introduction | `xx,00 € / séance` | Placeholder : ne pas publier. |
+| Coaching Ennéagramme | À partir de 390 € | Alternance coaching et découverte de soi. |
+| Séance préliminaire, 60 à 90 min | 99 € | Tarif par personne. |
+| Séances 1 à 3 | 90 € / séance | Coût moyen affiché : 92 €. |
+| Séances 3 à 6 | 80 € / séance | Le chevauchement à la séance 3 doit être corrigé ; coût moyen affiché : 87 €. |
+| Séances 7 à 9 | 70 € / séance | Coût moyen affiché : 82 €. |
+| Séance de clôture | Offerte | Valeur affichée : 99 €. |
+| Forfait ado/étudiant, 5 séances | 300 € | Séances préliminaire et clôture incluses. |
+| Séance ado/étudiant supplémentaire | 30 € | À confirmer. |
+
+### Ennéagramme — particuliers, TTC
+
+| Offre | Tarif relevé | Contenu |
+|---|---:|---|
+| Profilage Ennéagramme | À partir de 390 € / personne | 1 profilage, 2 séances individuelles, 1 guide offert. |
+| Formation Ennéagramme | À partir de 490 € / personne | 5 matinées en présentiel, 1 guide offert. |
+| Visio Ennéagramme | À partir de 33 € / séance | Formation collective à distance. |
+
+Veillée Ennéagramme, 5 séances d'une heure à distance :
+
+| Taille du groupe | Par séance et par personne | Total par personne |
+|---:|---:|---:|
+| 9 personnes | 33 € | 165 € |
+| 8 personnes | 37 € | 185 € |
+| 7 personnes | 42 € | 210 € |
+| 6 personnes | 49 € | 245 € |
+| 5 personnes | 59 € | 295 € |
+
+Matinée Ennéagramme, 5 séances de trois heures en présentiel :
+
+| Taille du groupe | Par matinée et par personne | Total par personne |
+|---:|---:|---:|
+| 9 personnes | 98 € | 490 € |
+| 8 personnes | 113 € | 565 € |
+| 7 personnes | 128,40 € | 642 € |
+| 6 personnes | 149,80 € | 749 € |
+
+Lieu actuellement indiqué : Moment Joyeux, 17 rue de France, 73110 Aix-les-Bains, le samedi de 9 h à 12 h. Le cas d'un groupe de 5 personnes en présentiel n'est pas renseigné.
+
+### Professionnels et organisations — HT
+
+| Offre | Tarif relevé | Contenu ou condition |
+|---|---:|---|
+| Animation Ennéa & Co | À partir de 2 400 € | Trois demi-journées. |
+| Coaching dirigeant / manager général | 249 € / heure | La carte indique aussi 249 € par mois : contradiction à résoudre. |
+| Coaching manager / cadre | 110 € / heure |  |
+| Coaching salarié non-cadre | 90 € / heure |  |
+| Coaching d'équipe | Sur devis | Après étude d'ingénierie pédagogique. |
+| Coaching annualisé | Sur devis | Après étude du besoin. |
+| DCO Online | 69 € / séance ou sur devis | Deux prix contradictoires sont affichés. |
+| Visio Ennéagramme | À partir de 30 € / séance | Dix séances collectives à distance. |
+
+Les frais de déplacement et frais connexes sont indiqués en sus. La proposition finale dépend de l'entretien préalable, de l'objectif et du processus d'accompagnement.
+
+## Incohérences à résoudre avant publication
+
+1. Le numéro visible et WhatsApp est `06 67 59 29 20`, mais le JSON structuré du site contient `+33 6 06 59 29 20`.
+2. La page À propos annonce Chambéry, tandis que la page Contact affiche « Lyon, Région AURA ».
+3. Le footer affiche `+33 6 67 59 29 20`, ce qui confirme plutôt le numéro `06 67 59 29 20`.
+4. Le tarif professionnel de 249 € apparaît « par mois » dans une carte et « par heure » dans le tableau.
+5. DCO Online apparaît à 69 € par séance puis « sur proposition tarifaire ».
+6. Les tranches coaching `1 à 3` puis `3 à 6` se chevauchent.
+7. Le libellé `249,OO` utilise des lettres O au lieu de zéros.
+8. La carte de coaching particulier contient encore `xx,00 €`.
+9. Toutes les méta-descriptions sont vides.
+10. La version de prévisualisation est en `noindex,nofollow` ; ce réglage devra être retiré en production.
+11. La majorité des images n'a pas de texte alternatif.
+12. Le copyright est figé à 2025.
+
+## Direction artistique actuelle
+
+- Logo bleu DCO sur fond transparent.
+- Couleur d'accent principale : `#ffb400` ; variantes utilisées : `#cc9000` et `#996c00`.
+- Texte principal : `#737373` sur fond blanc.
+- Titres : Montserrat, graisse 700.
+- Texte courant et navigation : Roboto.
+- Largeur de contenu bureau actuelle : environ 980 px.
+- Navigation en capitales, cartes en colonnes, boutons arrondis.
+
+Pour la nouvelle version, il est préférable de conserver le bleu du logo et de limiter l'orange/doré à un accent cohérent. Plusieurs visuels actuels ont des styles très différents ; le dossier final retient seulement ceux qui restent crédibles et réutilisables.
+
+## Images retenues
+
+Les 17 fichiers ci-dessous sont copiés dans `dco-site-assets/images/`, renommés de façon explicite et dédupliqués.
+
+| Fichier local | Usage recommandé | Source actuelle |
+|---|---|---|
+| [`brand-logo-dco.png`](dco-site-assets/images/brand-logo-dco.png) | Header, footer et favicon dérivé | Logo DCO commun à toutes les pages. |
+| [`home-hero-cooperation.webp`](dco-site-assets/images/home-hero-cooperation.webp) | Hero d'accueil | `6147363-standard.webp`. |
+| [`home-coaching-session.png`](dco-site-assets/images/home-coaching-session.png) | Carte Coaching / preuve de pratique | `image3-high.png`. Vérifier l'accord d'utilisation de l'image du client. |
+| [`home-enneagram-compass.png`](dco-site-assets/images/home-enneagram-compass.png) | Carte Ennéagramme | `image2-high-n4q67k.png`. |
+| [`home-testimonials-thumbsup.jpeg`](dco-site-assets/images/home-testimonials-thumbsup.jpeg) | Témoignages ou appel à l'action | Image Pexels `327533.jpeg`. |
+| [`about-olivier-debas-portrait.png`](dco-site-assets/images/about-olivier-debas-portrait.png) | Portrait principal À propos | `img_20251114_190152-high.png`. |
+| [`about-mountain-guide.jpg`](dco-site-assets/images/about-mountain-guide.jpg) | Métaphore du guide / À propos | `img-20230924-wa0032-standard.jpg`. |
+| [`about-pssm-badge.jpg`](dco-site-assets/images/about-pssm-badge.jpg) | Bloc PSSM | `num-risation_20250821-standard.jpg`. |
+| [`about-ocezam-article.png`](dco-site-assets/images/about-ocezam-article.png) | Parcours entrepreneurial, si le récit est conservé | `num-risation_20251117-2-standard.png`. |
+| [`coaching-individual-session.jpeg`](dco-site-assets/images/coaching-individual-session.jpeg) | Coaching individuel | Image Pexels `7176320.jpeg`. |
+| [`coaching-definition.png`](dco-site-assets/images/coaching-definition.png) | Introduction ou définition du coaching | `definition-standard.png`. |
+| [`coaching-certification-rncp.bmp`](dco-site-assets/images/coaching-certification-rncp.bmp) | Preuve de certification | Certificat RNCP actuel. À convertir en WebP/PNG et à contrôler pour les données personnelles avant publication. |
+| [`enneagram-brain-heart.jpeg`](dco-site-assets/images/enneagram-brain-heart.jpeg) | Tête, cœur et corps | Image Pexels `9162029.jpeg`. |
+| [`enneagram-dco-team-puzzle.png`](dco-site-assets/images/enneagram-dco-team-puzzle.png) | Coopération et approche DCO | `9bcd0520-fd15-41b7-a4b7-d4cae695fbb8-standard.png`. |
+| [`enneagram-compass-diagram.png`](dco-site-assets/images/enneagram-compass-diagram.png) | Hero ou section Ennéagramme | `boussole-et-diagramme-de-l-enn-agramme-standard.png`. |
+| [`formations-christian-pierdet.png`](dco-site-assets/images/formations-christian-pierdet.png) | Co-animation, uniquement si confirmée | `1667901953617-standard-mnpcw2-removebg-preview-high.png`. |
+| [`contact-email.jpeg`](dco-site-assets/images/contact-email.jpeg) | Contact | Image Pexels `5605061.jpeg`. |
+
+## Images écartées
+
+### Export — exclusion définitive
+
+- `logo-1-5sv74o.svg` et `logo-1.svg` : identité Export.
+- `oip-standard-rgpnuw.jpg` : logo OSCI, développement international.
+- `pr-sentation1-standard.png` : frise avec « ETS. DEBAS EXPORT » et « DEBAS POLOGNE » au centre.
+- `pasted-image-wed-nov-19-2025-11-20-56-gmt-0100-heure-normale-d-europe-centrale-high.png` : média de la page Direction Export externalisée.
+
+### Doublons, faible qualité ou faible pertinence
+
+- `file_...-standard-pe4lu8.png` : doublon exact du logo haute définition.
+- `img_20251114_190152-standard.png` : doublon exact du portrait retenu.
+- `bbx7i3k-standard.jpg` et `bbx7i3k-standard-fc6w44.jpg` : doublons exacts, image abstraite basse définition et peu spécifique à DCO.
+- `win_20241008_...png` : version basse définition du visuel de séance déjà retenu en haute définition.
+- `image1-standard.png` : filigrane visible et faible cohérence avec l'offre.
+- `image4-high-b9qn68.png` : détourage et fond de qualité insuffisante.
+- `6812433.jpeg` : scène de réception d'entreprise peu évocatrice du coaching.
+- `8000537.jpeg` : plans techniques sans lien clair avec le coaching.
+- `533446.jpeg` : logos de réseaux sociaux obsolètes et sans rapport direct avec le contenu Contact.
+- `getattachmentthumbnail-standard.png` et `getattachmentthumbnail-standard-ygrhr1.png` : logos administratifs décoratifs, inutiles à la compréhension des mentions légales.
+
+Les favicons, scripts, polices, icônes de guillemets et autres ressources techniques Webador ne sont pas des médias éditoriaux et ne sont pas repris.
+
+## Checklist pour la nouvelle version
+
+- [ ] Supprimer toute référence Export dans le contenu, le menu, les médias, le SEO et les données structurées.
+- [ ] Valider le numéro de téléphone officiel.
+- [ ] Valider la localisation à afficher : Chambéry, Lyon ou une formulation Région Auvergne-Rhône-Alpes.
+- [ ] Arbitrer les contradictions tarifaires.
+- [ ] Remplacer tous les placeholders et textes Webador génériques.
+- [ ] Faire valider les mentions légales et créer la politique de confidentialité.
+- [ ] Vérifier les droits et accords des portraits, témoignages et images de clients.
+- [ ] Optimiser les images lourdes et convertir le certificat BMP.
+- [ ] Rédiger un titre SEO et une méta-description propres à chaque page.
+- [ ] Ajouter des textes alternatifs descriptifs à toutes les images utiles.
+- [ ] Prévoir les redirections 301 des pages supprimées.
+- [ ] Connecter et tester le formulaire de contact avec consentement RGPD.
+- [ ] Retirer `noindex,nofollow` uniquement lors de la mise en production.
+Home.module.css
+a-propos
+api
+contact
+enneagramme
+entreprises
+globals.css
+icon.tsx
+layout.tsx
+mentions-legales
+not-found.module.css
+not-found.tsx
+opengraph-image.tsx
+page.tsx
+particuliers
+politique-confidentialite
+robots.ts
+sitemap.ts
+tarifs
+import type { Metadata } from "next";
+
+import "@fontsource-variable/manrope";
+import "@fontsource-variable/newsreader";
+import "lenis/dist/lenis.css";
+
+import { Footer } from "@/components/footer/Footer";
+import { Loader } from "@/components/loader/Loader";
+import { LOADER_INIT_SCRIPT } from "@/components/loader/loaderInit";
+import { NavigationTransitionProvider } from "@/components/motion/NavigationTransition";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { Header } from "@/components/navigation/Header";
+import { SectionToc } from "@/components/navigation/SectionToc";
+import { CONTACT_DETAILS } from "@/lib/navigation";
+import { getSiteUrl, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+
+import "./globals.css";
+
+export const metadata: Metadata = {
+  metadataBase: getSiteUrl(),
+  title: {
+    default: SITE_NAME,
+    template: "%s | DCO",
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: "Olivier Debas" }],
+  creator: "Olivier Debas",
+  publisher: SITE_NAME,
+  category: "Coaching professionnel",
+  keywords: [
+    "coaching professionnel",
+    "coaching d'équipe",
+    "Ennéagramme",
+    "formation management",
+    "Chambéry",
+    "Auvergne-Rhône-Alpes",
+  ],
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const siteUrl = getSiteUrl().toString();
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: SITE_NAME,
+    alternateName: "DCO",
+    url: siteUrl,
+    email: CONTACT_DETAILS.email,
+    telephone: CONTACT_DETAILS.phoneHref,
+    founder: {
+      "@type": "Person",
+      name: "Olivier Debas",
+      jobTitle: "Coach professionnel et formateur",
+    },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: CONTACT_DETAILS.streetAddress,
+      postalCode: CONTACT_DETAILS.postalCode,
+      addressLocality: CONTACT_DETAILS.city,
+      addressRegion: "Auvergne-Rhône-Alpes",
+      addressCountry: "FR",
+    },
+    areaServed: ["Auvergne-Rhône-Alpes", "France"],
+    sameAs: [CONTACT_DETAILS.linkedin],
+    description: SITE_DESCRIPTION,
+    knowsAbout: [
+      "Coaching professionnel",
+      "Coaching d'équipe",
+      "Ennéagramme",
+      "Formation managériale",
+    ],
+  };
+
+  // The inline script below sets data-loader on <html> before hydration.
+  return (
+    <html lang="fr" suppressHydrationWarning>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <script dangerouslySetInnerHTML={{ __html: LOADER_INIT_SCRIPT }} />
+        <noscript>
+          <style>{`[data-dco-loader]{display:none!important}html[data-loader="active"],html[data-loader="active"] body{overflow:auto!important}html[data-loader="active"] *{animation-play-state:running!important}`}</style>
+        </noscript>
+        <NavigationTransitionProvider>
+          <SmoothScroll>
+            <Loader />
+            <Header />
+            <SectionToc />
+            {children}
+            <Footer />
+          </SmoothScroll>
+        </NavigationTransitionProvider>
+      </body>
+    </html>
+  );
+}
+@import "tailwindcss";
+
+:root {
+  --background: #f4f0e6;
+  --foreground: #26352f;
+
+  /* Couleurs */
+  --color-paper: #f4f0e6;
+  --color-paper-light: #fffdf7;
+  --color-sand: #d7d0c4;
+  --color-ink: #26352f;
+  --color-ink-soft: #626f69;
+  --color-night: #101010;
+  --color-night-raised: #1a1a1a;
+  --color-on-night: #f7f7f5;
+  --color-on-night-soft: rgb(247 247 245 / 66%);
+  --color-blue: #079fe3;
+  --color-blue-dark: #087bc1;
+  --color-line: rgb(38 53 47 / 18%);
+  --color-line-on-night: rgb(247 247 245 / 18%);
+
+  /* Typographie */
+  --font-sans: "Manrope Variable", Arial, sans-serif;
+  --font-serif: "Newsreader Variable", Georgia, serif;
+  --text-display: clamp(3rem, 6.4vw, 7rem);
+  --text-h1: clamp(2.6rem, 5vw, 5.6rem);
+  --text-h2: clamp(2.1rem, 3.8vw, 4.4rem);
+  --text-h3: clamp(1.35rem, 1.9vw, 1.9rem);
+  --text-lead: clamp(1.15rem, 1.5vw, 1.45rem);
+  --text-body: 1.0625rem;
+  --text-small: 0.9375rem;
+  --tracking-display: -0.05em;
+  --tracking-heading: -0.04em;
+
+  /* Mise en page */
+  --container: 1560px;
+  --gutter: clamp(16px, 3vw, 48px);
+  --inset-margin: clamp(8px, 1.4vw, 24px);
+  --section-space: clamp(88px, 11vw, 168px);
+  --radius-panel: clamp(20px, 2.2vw, 32px);
+  --radius-card: 18px;
+  --radius-control: 999px;
+
+  /* Mouvement */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 220ms;
+  --duration-base: 480ms;
+  --duration-slow: 900ms;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: 7rem;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+main:focus {
+  outline: none;
+}
+
+/* Scroll stays locked while the loader curtain covers the page. */
+html[data-loader="active"],
+html[data-loader="active"] body {
+  overflow: hidden;
+}
+
+html:has([data-dco-not-found]) body {
+  overflow: hidden;
+}
+
+html:has([data-dco-not-found]) header,
+html:has([data-dco-not-found]) [data-dco-toc],
+html:has([data-dco-not-found]) footer,
+html:has([data-dco-not-found]) a[href="#main-content"],
+html:has([data-dco-not-found]) [data-dco-loader] {
+  display: none !important;
+}
+
+/* Le sommaire latéral s'efface derrière le menu principal ouvert. */
+body:has(#main-navigation[aria-hidden="false"]) [data-dco-toc] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+::selection {
+  background: #079fe3;
+  color: #141314;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Masques créés par RevealText (SplitText) : on élargit la zone visible
+   pour ne pas couper les jambages (g, p, j) ni les accents. */
+.reveal-line-mask {
+  margin-block: -0.1em -0.16em;
+  padding-block: 0.1em 0.16em;
+}
+
+/* Respiration entre le dernier panneau de la page et le pied de page. */
+body > main {
+  padding-bottom: clamp(16px, 2.4vw, 40px);
+}
+
+/* Mobile : des sections plus rapprochées pour des pages moins longues. */
+@media (max-width: 600px) {
+  :root {
+    --section-space: 64px;
+  }
+}
+/**
+ * Exécute `callback` une fois le rideau du loader levé (immédiatement s'il ne
+ * couvre pas la page). Renvoie une fonction qui annule l'attente.
+ */
+export function whenLoaderDone(callback: () => void) {
+  const html = document.documentElement;
+  if (html.dataset.loader !== "active") {
+    callback();
+    return () => {};
+  }
+
+  const observer = new MutationObserver(() => {
+    if (html.dataset.loader === "active") return;
+    observer.disconnect();
+    callback();
+  });
+  observer.observe(html, { attributes: true, attributeFilter: ["data-loader"] });
+  return () => observer.disconnect();
+}
+import type { Metadata } from "next";
+
+import { SITE_NAME } from "@/lib/site";
+
+type PageMetadataOptions = Readonly<{
+  title: string;
+  description: string;
+  path: `/${string}` | "/";
+  noIndex?: boolean;
+}>;
+
+export function createPageMetadata({
+  title,
+  description,
+  path,
+  noIndex = false,
+}: PageMetadataOptions): Metadata {
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website",
+      locale: "fr_FR",
+      url: path,
+      siteName: SITE_NAME,
+      title: `${title} | DCO`,
+      description,
+      images: [
+        {
+          url: "/opengraph-image",
+          width: 1200,
+          height: 630,
+          alt: SITE_NAME,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | DCO`,
+      description,
+      images: ["/opengraph-image"],
+    },
+    robots: noIndex ? { index: false, follow: true } : { index: true, follow: true },
+  };
+}
+export type NavigationItem = Readonly<{
+  id: string;
+  label: string;
+  href: `/${string}`;
+}>;
+
+export const PRIMARY_NAVIGATION: readonly NavigationItem[] = [
+  { id: "individuals", label: "Particuliers", href: "/particuliers" },
+  { id: "companies", label: "Entreprises", href: "/entreprises" },
+  { id: "enneagram", label: "Ennéagramme", href: "/enneagramme" },
+  { id: "pricing", label: "Tarifs", href: "/tarifs" },
+  { id: "about", label: "À propos", href: "/a-propos" },
+];
+
+export const MENU_NAVIGATION: readonly NavigationItem[] = [
+  { id: "home", label: "Accueil", href: "/" },
+  ...PRIMARY_NAVIGATION,
+  { id: "contact", label: "Contact", href: "/contact" },
+];
+
+export const CONTACT_LINK: NavigationItem = {
+  id: "contact",
+  label: "Prendre contact",
+  href: "/contact",
+};
+
+export function isActivePath(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+export const CONTACT_DETAILS = {
+  email: "dco@odebas.fr",
+  phoneLabel: "06 67 59 29 20",
+  phoneHref: "+33667592920",
+  linkedin: "https://linkedin.com/company/dco-debas-coaching-organisations/",
+  whatsapp: "https://api.whatsapp.com/send?phone=33667592920",
+  location: "Chambéry · Auvergne-Rhône-Alpes",
+  streetAddress: "11 rue Fodéré",
+  postalCode: "73000",
+  city: "Chambéry",
+  mapsUrl: "https://www.google.com/maps/search/?api=1&query=11+rue+Fod%C3%A9r%C3%A9+73000+Chamb%C3%A9ry",
+} as const;
+
+/** Informations pratiques sur le lieu de rendez-vous. */
+export const VENUE_ACCESS = [
+  "Parking Curial à 50 mètres",
+  "Nombreuses possibilités de restauration à proximité",
+  "Pas d’accès pour les personnes à mobilité réduite : un lieu adapté ou une séance en visio peut être proposé",
+] as const;
+export const SITE_NAME = "Debas Coaching & Organisations";
+export const SITE_SHORT_NAME = "DCO";
+export const SITE_DESCRIPTION =
+  "Coaching professionnel, Ennéagramme et formations pour les particuliers, les équipes et les organisations.";
+
+export function getSiteUrl() {
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+  const value = configuredUrl ?? (vercelUrl ? `https://${vercelUrl}` : "http://localhost:3000");
+
+  return new URL(value);
+}

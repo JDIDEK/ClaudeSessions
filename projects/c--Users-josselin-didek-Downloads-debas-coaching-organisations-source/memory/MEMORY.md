@@ -1,0 +1,1 @@
+- [vinext start renvoie 404 sur /assets](vinext-start-assets-404.md) — tester le rendu navigateur avec `pnpm run dev`, pas avec le serveur de prod local.
