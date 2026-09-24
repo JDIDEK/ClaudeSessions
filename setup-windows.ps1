@@ -2,7 +2,7 @@ param(
     [switch]$NoSchedule
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 
 $Repo = $PSScriptRoot
 $RepoProjects = Join-Path $Repo "projects"

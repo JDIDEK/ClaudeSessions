@@ -3,7 +3,7 @@ param(
     [string]$Mode = "push"
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 $Repo = $PSScriptRoot
 $Projects = Join-Path $Repo "projects"
 $StateDir = Join-Path $env:LOCALAPPDATA "ClaudeSessions"
